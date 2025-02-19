@@ -1,0 +1,33 @@
+{
+    "manifest_version":3,
+
+    "name":"Crawling DC",
+    "description":"DC 갤러리에서 특정 키워드를 모니터링하고, 새 게시물을 알림으로 보내드립니다",
+    "version":"1.0.0",
+
+    "permissions": [
+        "storage", 
+        "alarms", 
+        "notifications"
+    ],
+    "host_permissions": [
+        "https://gall.dcinside.com/*"
+    ],
+
+
+    "background": {
+        "service_worker": "src/js/background.js"
+    },
+
+    "action":{
+        "default_icon":"src/img/crawling_icon.png", 
+        "default_popup":"popup.html"
+    },
+
+    "content_scripts": [
+        {
+            "matches": ["https://gall.dcinside.com/mgallery/board/lists*"],
+            "js": ["src/js/content.js"]
+        }
+    ]
+}
