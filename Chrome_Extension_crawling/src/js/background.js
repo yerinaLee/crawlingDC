@@ -74,3 +74,59 @@ chrome.alarms.onAlarm.addListener(alarm => {
         });
     }
 });
+
+
+
+
+
+/* 유저 계정 정보 가져오는 TypeScript */
+/* 
+// background.ts
+function getUserProfile(): void {
+    chrome.identity.getProfileUserInfo((userInfo) => {
+      console.log('User ID:', userInfo.id);
+      console.log('User Email:', userInfo.email);
+    });
+  }
+  
+  function authenticateAndFetchProfile(): void {
+    chrome.identity.getAuthToken({ interactive: true }, (token) => {
+      if (chrome.runtime.lastError) {
+        console.error('Error:', chrome.runtime.lastError.message);
+      } else {
+        getUserProfile();
+      }
+    });
+  }
+  
+  // 크롬 확장 프로그램이 시작될 때 프로파일 정보를 가져옴
+  chrome.runtime.onInstalled.addListener(() => {
+    authenticateAndFetchProfile();
+  }); */
+
+
+
+
+// 📄 background.js
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === 'new_post') {
+        const { email, keyword, title } = message;
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            to_email: email,
+            subject: `키워드 [${keyword}] 관련 새 글 알림`,
+            message: `DC에서 새로운 게시물이 등록되었습니다! 제목: ${title}`
+        }).then(() => {
+            console.log('Email sent successfully!');
+        }).catch((error) => {
+            console.error('Email sending failed:', error);
+        });
+
+        chrome.notifications.create('', {
+            type: 'basic',
+            iconUrl: 'src/img/crawling_icon.png',
+            title: '새 글 알림',
+            message: `키워드 [${keyword}] 관련 새 글: ${title}`
+        });
+    }
+});
