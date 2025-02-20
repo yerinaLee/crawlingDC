@@ -2,21 +2,20 @@
 <html>
 <head>
     <title>DC Crawling</title>
+    <link rel="stylesheet" type="text/css" href="src/css/popup.css">
 </head>
 <body>
     <h1>DC Crawling</h1>
-    <p>Enter keywords to monitor</p>
-    <h3><label>keyword :</label></h3>
-    <input type="text" id="keyword">
-    <br>
-    <br>
     <p>Enter the email you want to receive the new post of the keyword</p>
-    <h3><label>email :</label></h3>
-    <input type="email" id="email">
-
-    <br><br>
-    <button id="save">save</button>
-
+    <form id ="keyword-form">
+        <input type="email" id="email" placeholder="enter your email" required>
+        <input type="text" id="keyword" placeholder="keyword for crawling" required>
+        <button type="submit">start crawling</button>
+    </form>
+    <ul id="keyword-list"></ul>
+    <button id="check-db">DB check</button>
+    
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script src="src/js/popup.js"></script>
 </body>
 </html>

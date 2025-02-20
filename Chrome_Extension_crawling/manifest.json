@@ -8,7 +8,8 @@
     "permissions": [
         "storage", 
         "alarms", 
-        "notifications"
+        "notifications",
+        "identity"
     ],
     "host_permissions": [
         "https://gall.dcinside.com/*"
