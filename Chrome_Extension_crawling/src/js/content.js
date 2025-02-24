@@ -1,4 +1,4 @@
-setInterval(() => {
+/* setInterval(() => {
     const posts = document.querySelectorAll('.gall_list .ub-content');
     chrome.storage.local.get(['keywords'], function(result){
         const keywords = result.keywords || [];
@@ -14,4 +14,4 @@ setInterval(() => {
             })
         })
     })
-}, 30000)
+}, 30000) */

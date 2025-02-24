@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>DC Crawling</title>
     <link rel="stylesheet" type="text/css" href="src/css/popup.css">
 </head>
 <body>
     <h1>DC Crawling</h1>
-    <p>Enter the email you want to receive the new post of the keyword</p>
+    <p>새 글을 모니터링할 키워드를 입력해주세요!</p>
     <form id ="keyword-form">
-        <input type="email" id="email" placeholder="enter your email" required>
-        <input type="text" id="keyword" placeholder="keyword for crawling" required>
+        <br>
+        <div style="font-weight: bold; font-size: 14px;">
+            수신메일 : <span id="email" style="font-size: 16px;"></span>
+        </div>
+        <div>
+            <p><spqn style="color: red; font-weight: bold; font-size: 12px;">!</spqn> 만약 수신메일이 보이지 않는다면, 크롬 브라우저 로그인 후 계정 동기화를 진행해주세요.</p>
+        </div>  
+        <!-- <input type="email" id="email" placeholder="enter your email" required> -->
+        <input type="text" id="keyword" placeholder="모니터링 키워드" required>
         <button type="submit">start crawling</button>
     </form>
     <ul id="keyword-list"></ul>
     <button id="check-db">DB check</button>
     
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script> -->
     <script src="src/js/popup.js"></script>
 </body>
 </html>
