@@ -4,12 +4,14 @@
     "name":"Crawling DC",
     "description":"DC 갤러리에서 특정 키워드를 모니터링하고, 새 게시물을 알림으로 보내드립니다",
     "version":"1.0.0",
+    "default_locale": "ko",
 
     "permissions": [
         "storage", 
         "alarms", 
         "notifications",
-        "identity"
+        "identity",
+        "identity.email"
     ],
     "host_permissions": [
         "https://gall.dcinside.com/*"

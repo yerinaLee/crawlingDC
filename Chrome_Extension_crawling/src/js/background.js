@@ -1,4 +1,4 @@
-// 백그라운드 스크립트
+/* // 백그라운드 스크립트
 const BASE_URL = "https://gall.dcinside.com/mgallery/board/lists";
 
 // 이메일 전송을 위한 EmailJS 설정
@@ -75,7 +75,7 @@ chrome.alarms.onAlarm.addListener(alarm => {
     }
 });
 
-
+ */
 
 
 
@@ -107,7 +107,7 @@ function getUserProfile(): void {
 
 
 
-// 📄 background.js
+/* // 📄 background.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'new_post') {
         const { email, keyword, title } = message;
@@ -129,4 +129,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             message: `키워드 [${keyword}] 관련 새 글: ${title}`
         });
     }
-});
+}); */
+
+
+// 크롬에 로그인된 계정정보 가져오는 코드
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "getUserInfo"){
+        chrome.identity.getProfileUserInfo({ accountStatus:"ANY"}, (userInfo) => {
+            console.log("User Info : ", userInfo);
+            sendResponse(userInfo);
+        });
+        return true; // 비동기응답을 위한 true 반환
+    }
+})
+
+
