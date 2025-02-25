@@ -107,7 +107,7 @@ function getUserProfile(): void {
 
 
 
-/* // 📄 background.js
+/* // background.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'new_post') {
         const { email, keyword, title } = message;
