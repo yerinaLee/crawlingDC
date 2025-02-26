@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const keywordInput = document.getElementById('keyword');
     var userEmail = '';
     var keyword = '';
-    var keywords = [];
 
     
     // 로그인된 계정 불러오기
@@ -121,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // 키워드 저장 (이메일 - 키워드 - 시작날짜 - 새 글넘버)
+        // 키워드 저장 (이메일 - 키워드 - 시작날짜 - 새 글넘버) => 보안문제로 (k:v(키워드-시작날짜-새글넘버)) 로 변경
         // 저장시 중복검사
         // email 암호화....ㅎㅎㅎ
         // { "email":"abc@google.com", "keyword":"abc", "date_created":"2025-02-25", "no":2469 }
@@ -133,73 +132,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if(userEmail && keyword){
 
-            // 키워드 데이터 저장
+            // 중복검사
+            const result = await getDataFromStorage(null);
+            const keys = Object.keys(result);
+            const exist = keys.some((key) => key === keyword);
 
-            // email 암호화
-            const secretKey = CryptoJS.lib.WordArray.random(32).toString()
-            
-            
+            if(!exist){
 
+                // 키워드의 최신글 불러오기
+                const { latestPostId } = await getNewestPostId(keyword, 0);
 
-            // 키워드의 최신글 불러오기
-            const { latestPostId } = await getNewestPostId(keyword, 0);
-
-            const data = {
-                email : userEmail,
-                keyword : keyword,
-                date_created : date,
-                no : latestPostId
-            }
-
-            // userData 자리에 암호화된 이메일 들어가야함~ k 자리입니다
-            chrome.storage.sync.set({userData : data}, function(){
-
-                if (chrome.runtime.lastError) {
-                    console.error("저장 중 오류 발생:", chrome.runtime.lastError);
-                    alert('오류가 발생했습니다. 다시 시도해주세요.');
-
-                } else {
-                    console.log("데이터 저장 완료!");
-                    alert('키워드 모니터링이 시작되었습니다');
-                    // addKeywordToList(email, keyword, date);
-
-                    // 테스트용 -> 저장된 데이터 출력
-                    chrome.storage.sync.get("userData", function(result){
-                        console.log("저장된 데이터:", result.userData);
-                        // {date_created: '2025. 2. 25.', email: 'abc@gmail.com', keyword: '페이백', no: 0}
-                    })
+                const data = {
+                    // secretKey : secretKey,
+                    // email : encryptedEmail,
+                    // keyword : keyword,
+                    date_created : date,
+                    no : latestPostId
                 }
-                keywordInput.value = '';
-            });
 
+                // DB 저장
+                chrome.storage.sync.set({ [keyword] : data}, function(){
 
-            // chrome.storage.sync.get(['keywords'], function(result){
-            //     const keywords = result.keywords || [];
+                    if (chrome.runtime.lastError) {
+                        console.error("저장 중 오류 발생:", chrome.runtime.lastError);
+                        alert('오류가 발생했습니다. 다시 시도해주세요.');
 
-            //     // 중복 검사
-            //     const exist = keywords.some(item => item.email === email && item.keyword === keyword);
+                    } else {
+                        console.log("데이터 저장 완료!");
+                        alert('키워드 모니터링이 시작되었습니다');
+                        // addKeywordToList(email, keyword, date);
 
-            //     if(!exist){
-
-            //         keywords.push({email, keyword, date});
-            //         chrome.storage.sync.set({keywords}, function(){
-            //             addKeywordToList(email, keyword, date);
-            //             emailInput.value = '';
-            //             keywordInput.value = '';
-            //         });
-
-
-
-            //     } else {
-            //         alert('이미 등록된 키워드입니다!');
-            //     }
-            // });
+                        // 테스트용 -> 저장된 데이터 출력
+                        chrome.storage.sync.get("keyword", function(result){
+                            console.log("저장된 데이터:", result.keyword);
+                            // {date_created: '2025. 2. 25.', email: 'abc@gmail.com', keyword: '페이백', no: 0}
+                        })
+                    }
+                    keywordInput.value = '';
+                });
+                
+            } else {
+                alert('이미 등록된 키워드입니다!');
+            }
         }
     });
 
 });
 
 
+/* 키워드로 최신글 no 가져오기 */
 async function getNewestPostId(keyword, lastPostId) { 
 
     const BASE_URL = "https://gall.dcinside.com/mgallery/board/lists";
@@ -229,3 +210,36 @@ async function getNewestPostId(keyword, lastPostId) {
 
     return { latestPostId };
 }
+
+
+
+/* secret_key 생성 */
+function generateSecretKey(){
+    const array = new Uint8Array(32);
+    window.crypto.getRandomValues(array);
+    return btoa(String.fromCharCode(...array));
+}
+
+
+/* storage 에서 key로 value 불러오기 */
+function getDataFromStorage(keys){
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(keys, function(result){
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else {
+                resolve(result);
+            }
+        });
+    })
+}
+
+
+// email 암호화
+// secret key 생성
+// const secretKey = generateSecretKey();
+// const encryptedEmail = CryptoJS.AES.encrypt(userEmail, secretKey).toString();
+
+// 복호화 코드
+// const bytes = CryptoJS.AES.decrypt(encryptedEmail, secretKey);
+// const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
