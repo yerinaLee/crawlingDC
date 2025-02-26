@@ -31,5 +31,35 @@ ul {
 li {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
+    padding: 1px 0;
+}
+
+ul > li > b {
+    font-size: 18px;
+    padding : 0 20px
+}
+
+ul > li > span {
+    padding-right: 25px;
+}
+
+ul > li > button {
+    /* background: none; */
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px; /* 오른쪽 끝에 배치 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px; /* 버튼 크기 */
+    height: 18px;
+    padding: 5px;
+    background-color: white;
+}
+
+ul > li > button > span {
+    font-size: 18px;
+    color: red;
+    font-weight: bold;
 }

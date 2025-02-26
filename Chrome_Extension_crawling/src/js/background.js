@@ -79,34 +79,6 @@ chrome.alarms.onAlarm.addListener(alarm => {
 
 
 
-/* 유저 계정 정보 가져오는 TypeScript */
-/* 
-// background.ts
-function getUserProfile(): void {
-    chrome.identity.getProfileUserInfo((userInfo) => {
-      console.log('User ID:', userInfo.id);
-      console.log('User Email:', userInfo.email);
-    });
-  }
-  
-  function authenticateAndFetchProfile(): void {
-    chrome.identity.getAuthToken({ interactive: true }, (token) => {
-      if (chrome.runtime.lastError) {
-        console.error('Error:', chrome.runtime.lastError.message);
-      } else {
-        getUserProfile();
-      }
-    });
-  }
-  
-  // 크롬 확장 프로그램이 시작될 때 프로파일 정보를 가져옴
-  chrome.runtime.onInstalled.addListener(() => {
-    authenticateAndFetchProfile();
-  }); */
-
-
-
-
 /* // background.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'new_post') {
