@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log(item)
 
         const keywordData = result[item];
-        addKeywordToList(item, keywordData.date_created);
+        addKeywordToList(item);
     });
 
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         event.preventDefault();
 
         keyword = keywordInput.value.split(" ").join("");
-        const date = new Date().toLocaleDateString();
+        // const date = new Date().toLocaleDateString();
         
         if(userEmail == ''){
             alert('이메일 로그인 후 진행해주세요.')
@@ -69,8 +69,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const { latestPostId } = await getNewestPostId(keyword, 0);
 
                 const data = {
-                    date_created : date,
-                    no : latestPostId
+                    latest_post_id : latestPostId
                 }
 
                 // DB 저장
@@ -83,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     } else {
                         console.log("데이터 저장 완료!");
                         alert('키워드 모니터링이 시작되었습니다');
-                        addKeywordToList(keyword, date);
+                        addKeywordToList(keyword);
 
                         // 테스트용 -> 저장된 데이터 출력
                         // chrome.storage.sync.get("keyword", function(result){
@@ -159,16 +158,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // 키워드 목록에 추가
-    function addKeywordToList(keyword, date){
+    function addKeywordToList(keyword){
         const li = document.createElement('li');
         const b = document.createElement('b');
-        const span = document.createElement('span');
+        // const span = document.createElement('span');
 
         b.textContent = `${keyword}`
-        span.textContent = `(${date} ~)`
+        // span.textContent = `(${date} ~)`
 
         li.appendChild(b);
-        li.appendChild(span);
+        // li.appendChild(span);
 
         const deleteButton = document.createElement('button');
         deleteButton.id = keyword
